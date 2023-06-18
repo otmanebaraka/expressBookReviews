@@ -57,7 +57,7 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
         if (username) {
             // If a review by the current user already exists, update it. Otherwise, create a new one.
             book.reviews[username] = review;
-            res.status(200).send(book);
+            res.status(200).send('The review for the book with ISBN: '+ isbn + ' has been added/updated');
         } else {
             res.status(403).send('Unauthorized');
         }
@@ -80,7 +80,7 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
             if (book.reviews.hasOwnProperty(username)) {
                 // Delete the review
                 delete book.reviews[username];
-                res.status(200).send('Review deleted');
+                res.status(200).send('Reviews for the book ISBN: ' + isbn + ' posted by ' + username + ' has been deleted');
             } else {
                 res.status(404).send('No review found for the user on the specified book');
             }

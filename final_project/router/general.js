@@ -17,16 +17,20 @@ public_users.post("/register", (req,res) => {
             username:username,
             password:password
         });
-        res.status(201).send('User Registred successfully')
+        res.status(201).json({
+            message:'User Registred successfully'
+        })
     }else{
-        res.status(400).send('Username is already taken');
+        res.status(400).json({
+            message:'Username is already taken'
+        });
     }
 });
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
   //Write your code here
-    res.status(200).send(JSON.stringify(books, null, 4));
+    res.status(200).send({books:books});
 });
 
 // Get book details based on ISBN
@@ -46,10 +50,9 @@ public_users.get('/author/:author',function (req, res) {
     //Write your code here
     const author = req.params.author;
     const booksArr = Object.values(books);
-    const bookIndex = booksArr.indexOf(book=>book.author === author);
-    if(bookIndex !== -1){
-        const book = booksArr[bookIndex];
-        res.status(200).send(book);
+    const bookFounds = booksArr.filter(book=>book.author === author);
+    if(bookFounds.length > -1){
+        res.status(200).send(bookFounds);
     }else{
         res.status(404).send('Book not found');
     }
@@ -62,7 +65,7 @@ public_users.get('/title/:title',function (req, res) {
   const booksArr = Object.values(books);
   const book = booksArr.filter(book=>book.title === title);
   if(book){
-      res.status(200).send(JSON.stringify(book, null, 4));
+      res.status(200).send(book);
   }else{
       res.status(404).send('Book not found');
   }});
